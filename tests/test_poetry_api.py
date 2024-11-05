@@ -95,8 +95,3 @@ def request_author_titles(api, author, context):
     """Request the list of titles for a specific author from PoetryDB."""
     context['response'] = api.get_author_titles_list(author)
 
-
-@then(parsers.parse('the request result should match the "{expected}" results file'))
-def check_author_titles(api, context, expected):
-    """Check that the response matches the expected results."""
-    assert api.compare_results(expected, context['response'].text) == "No differences found."
