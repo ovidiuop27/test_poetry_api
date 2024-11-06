@@ -53,16 +53,6 @@ The compare_results method in ApiUtils uses DeepDiff to compare actual and expec
 If the compare_results method detects any differences, it will save the differences in a JSON file within the compared_results directory. The filename includes a timestamp for easy tracking.
 This allows for easier debugging and tracking of mismatches between actual and expected API responses.
 
-## Reason for Choosing DeepDiff
-DeepDiff is used here due to its robustness in detecting even minor discrepancies between the API response and expected data.
-It is especially helpful in validating dynamic API content, where slight changes may be introduced by the data source.
-With DeepDiff, the tests can ignore minor ordering issues while detecting meaningful differences, and the results of failing tests are saved to JSON files in compared_results for easy debugging.
-
-## Notes:
-Encoding Issue: When Python read the request results, certain characters in the response were misinterpreted.
-For example, 'And brought’st Thy sweets along with Thee.' was read as 'And broughtâ€™st Thy sweets along with Thee.'.
-To handle this, "encoding='utf-8'" was added when reading the expected files.
-
 One of the tests will fail to showcase how DeepDiff highlights differences might look like. Example of DeepDiff Output for failing tests:
 ```
 'values_changed': {
@@ -88,3 +78,16 @@ One of the tests will fail to showcase how DeepDiff highlights differences might
 }
 ```
 This shows any differences between the actual and expected results in detail, such as value changes, added/removed items, and repetition changes.
+
+## Reason for Choosing DeepDiff
+DeepDiff is used here due to its robustness in detecting even minor discrepancies between the API response and expected data.
+It is especially helpful in validating dynamic API content, where slight changes may be introduced by the data source.
+With DeepDiff, the tests can ignore minor ordering issues while detecting meaningful differences, and the results of failing tests are saved to JSON files in compared_results for easy debugging.
+
+## Notes:
+- Encoding Issue: When Python read the request results, certain characters in the response were misinterpreted.
+For example, 'And brought’st Thy sweets along with Thee.' was read as 'And broughtâ€™st Thy sweets along with Thee.'.
+To handle this, "encoding='utf-8'" was added when reading the expected files.
+- `SSL: CERTIFICATE_VERIFY_FAILED` error occurred when running the tests on a different machine. As a quick (but not recommended) fix, the "
+  verify=False" parameter can be added to the requests.get() function. Alternatively make sure your system has the
+  latest version of Python and that the certificates are properly installed.<br>`bash: pip install --upgrade certifi`
